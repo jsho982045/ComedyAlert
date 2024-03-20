@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     fetchNews();
 });
 
+let lastStoryIndex = 0;
 let isLoading = false;
 
 function fetchNews() {
@@ -14,8 +15,10 @@ function fetchNews() {
         .then(response => response.json())
         .then(storyIds => {
             // Limit to the first 10 stories for simplicity
-            const topTenStoryIds = storyIds.slice(0, 10);
-            return Promise.all(topTenStoryIds.map(id =>
+            const nextStoryIds = storyIds.slice(lastStoryIndex, lastStoryIndex + 10);
+            lastStoryIndex += 10;
+
+            return Promise.all(nextStoryIds.map(id =>
                 fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`).then(response => response.json())
             ));
         })
@@ -24,29 +27,27 @@ function fetchNews() {
             newsContainer.innerHTML = ''; // Clear the container
 
             // Create columns for stories
-            stories.forEach((story, index) => {
+            stories.forEach(story => {
+                const columnDiv = document.createElement('div');
+                columnDiv.className = 'collumn';
                 const storyHtml = `
-                    <div class="collumn">
-                        <div class="head">
-                            <span class="headline hl3">${story.title}</span>
-                            <p><span class="headline hl4">by ${story.by}</span></p>
-                        </div>
-                        <p>${story.text || ''}</p>
-                        <p>${new Date(story.time * 1000).toLocaleDateString()}</p>
-                        <a href="${story.url}" target="_blank">Read More</a>
+                    <div class="head">
+                        <span class="headline hl3">${story.title}</span>
+                        <p>by ${story.by}</p>
                     </div>
+                    <p>${new Date(story.time * 1000).toLocaleDateString()}</p>
+                    <a href="${story.url}" target="_blank">Read More</a>
                 `;
-                newsContainer.innerHTML += storyHtml;
+                columnDiv.innerHTML = storyHtml;
+                newsContainer.appendChild(columnDiv);
             });
 
             isLoading = false;
-        }).catch(error => {
+        })
+        .catch(error => {
             console.error("There was an error fetching the news:", error);
             isLoading = false;
         });
 }
 
-function displayNoMoreNews() {
-    const newsContainer = document.getElementById('newsContainer');
-    newsContainer.innerHTML += '<div class="collumn"><p>No more news to load.</p></div>';
-}
+fetchNews();
