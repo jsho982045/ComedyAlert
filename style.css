@@ -328,3 +328,43 @@ button#loadMore {
         margin-bottom: 10px;
     }
 }
+
+.story-selection {
+    text-align: center; /* Centers the story selection controls */
+    padding: 10px;
+}
+
+.story-selection label,
+.story-selection select,
+.story-selection button {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    margin: 0 5px;
+}
+
+.story-selection select {
+    padding: 5px 10px;
+    background-color: transparent;
+    border: 1px solid #2f2f2f;
+}
+
+
+.story-selection button {
+    background-color: #2f2f2f;
+    color: #f9f7f1;
+    border: none;
+    padding: 5px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+.story-selection button:hover {
+    background-color: #444;
+}
+
+/* Update the "active" state for the story type to make it stand out */
+.story-selection select[value="top"]:checked {
+    font-weight: bold;
+    text-decoration: underline;
+}

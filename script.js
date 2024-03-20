@@ -1,6 +1,7 @@
 let currentPage = 1;
-let isLoading = false;
 let storiesPerPage = 10;
+let isLoading = false;
+let currentStoryType = 'top';
 let totalStories = 0;
 
 
@@ -14,7 +15,8 @@ function fetchNews() {
     if (isLoading) return;
 
     isLoading = true;
-    const url = 'https://hacker-news.firebaseio.com/v0/topstories.json';
+    const currentStoryType = document.getElementById('storyType').value;
+    const url = `https://hacker-news.firebaseio.com/v0/${currentStoryType}stories.json`;
 
     fetch(url)
         .then(response => response.json())
@@ -80,3 +82,12 @@ function prevPage() {
         fetchNews();
     }
 }
+
+document.getElementById('storyType').addEventListener('change', function() {
+    currentPage = 1; // Reset to first page on type change
+    currentStoryType = this.value;
+    fetchNews(); // Fetch stories of the new type
+});
+
+// Initialize footer
+updatePaginationFooter();

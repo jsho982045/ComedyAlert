@@ -12,15 +12,22 @@
             <header>NewsApp</header>
         </div>
         <div class="subhead">Latest Hacker News</div>
+        <div class="story-selection">
+            <label for="storyType">Choose Stories:</label>
+            <select id="storyType">
+                <option value="top">Top</option>
+                <option value="new">New</option>
+            </select>
+        </div>
     </div>
     <div class="content" id="newsContainer">
         <!-- News items will be dynamically inserted here -->
     </div>
-    <button id="loadMore" onclick="fetchNews()">Load More</button>
     <footer id="paginationFooter">
-        <button id="prevPage" onClick="prevPage()">Previous Page</button>
+        <button id="prevPage" onclick="prevPage()">Previous Page</button>
         <span id="pageNumber">Page 1</span>
-        <button id="nextPage" onClick="nextPage()">Next Page</button>
+        <button id="nextPage" onclick="nextPage()">Next Page</button>
+    </footer>
     <script src="script.js"></script>
 </body>
 </html>
