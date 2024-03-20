@@ -1,32 +1,37 @@
+let currentPage = 1;
+let isLoading = false;
+let storiesPerPage = 10;
+let totalStories = 0;
+
+
 document.addEventListener("DOMContentLoaded", function() {
     fetchNews();
+    updatePaginationFooter();
 });
 
-let lastStoryIndex = 0;
-let isLoading = false;
 
 function fetchNews() {
     if (isLoading) return;
 
     isLoading = true;
-    let url = 'https://hacker-news.firebaseio.com/v0/topstories.json';
+    const url = 'https://hacker-news.firebaseio.com/v0/topstories.json';
 
     fetch(url)
         .then(response => response.json())
         .then(storyIds => {
-            // Limit to the first 10 stories for simplicity
-            const nextStoryIds = storyIds.slice(lastStoryIndex, lastStoryIndex + 10);
-            lastStoryIndex += 10;
+            totalStories = storyIds.length; // Keep track of the total number of stories
+            const startStory = (currentPage - 1) * storiesPerPage;
+            const endStory = startStory + storiesPerPage;
+            const pageStoryIds = storyIds.slice(startStory, endStory);
 
-            return Promise.all(nextStoryIds.map(id =>
+            return Promise.all(pageStoryIds.map(id =>
                 fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`).then(response => response.json())
             ));
         })
         .then(stories => {
             const newsContainer = document.getElementById('newsContainer');
-            newsContainer.innerHTML = ''; // Clear the container
+            newsContainer.innerHTML = ''; // Clear the container before adding new stories
 
-            // Create columns for stories
             stories.forEach(story => {
                 const columnDiv = document.createElement('div');
                 columnDiv.className = 'collumn';
@@ -42,6 +47,7 @@ function fetchNews() {
                 newsContainer.appendChild(columnDiv);
             });
 
+            updatePaginationFooter();
             isLoading = false;
         })
         .catch(error => {
@@ -50,4 +56,27 @@ function fetchNews() {
         });
 }
 
-fetchNews();
+function updatePaginationFooter() {
+    const pageNumberElement = document.getElementById('pageNumber');
+    pageNumberElement.textContent = `Page ${currentPage}`;
+
+    const prevPageButton = document.getElementById('prevPage');
+    prevPageButton.style.visibility = currentPage === 1 ? 'hidden' : 'visible';
+
+    const nextPageButton = document.getElementById('nextPage');
+    nextPageButton.style.visibility = (currentPage * storiesPerPage) >= totalStories ? 'hidden' : 'visible';
+}
+
+function nextPage() {
+    if ((currentPage * storiesPerPage) < totalStories) {
+        currentPage++;
+        fetchNews();
+    }
+}
+
+function prevPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        fetchNews();
+    }
+}

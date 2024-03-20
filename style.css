@@ -202,7 +202,6 @@ p{
     font-family: 'Playfair Display', serif;
     font-size: 36px;
     line-height: 44px;
-    /*font-style: italic;*/
     text-align: center;
     font-weight: 400;
     display: block;
@@ -276,6 +275,56 @@ p{
 
 }
 
-#loadMore{
-    align-items: left;
+
+
+/* Pagination Footer Styling */
+footer#paginationFooter {
+    text-align: center; /* Centers the pagination footer */
+    margin-top: 20px;
+    padding: 10px 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    border-top: 1px solid #2f2f2f; /* Adds a top border line for the footer */
+}
+
+button#loadMore, button#prevPage, button#nextPage {
+    background-color: transparent;
+    color: #2f2f2f;
+    border: 2px solid #2f2f2f;
+    padding: 5px 15px;
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    margin: 0 10px;
+    transition: background-color 0.3s ease;
+}
+
+button#loadMore:hover, button#prevPage:hover, button#nextPage:hover {
+    background-color: #2f2f2f;
+    color: #f9f7f1;
+    cursor: pointer;
+}
+
+/* Hide the "Load More" button when not in use */
+button#loadMore {
+    display: none; 
+}
+
+/* Responsive adjustments */
+@media only all and (max-width: 900px) {
+    button#loadMore, button#prevPage, button#nextPage {
+        font-size: 14px;
+        padding: 5px 10px;
+    }
+}
+
+@media only all and (max-width: 600px) {
+    footer#paginationFooter {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    button#prevPage, button#nextPage {
+        margin-bottom: 10px;
+    }
 }
