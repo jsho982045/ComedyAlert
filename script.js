@@ -82,6 +82,18 @@ function prevPage() {
         fetchNews();
     }
 }
+function updateTimeAndDate() {
+    const now = new Date();
+    document.getElementById('currentDate').textContent  = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    setTimeout(updateTimeAndDate, 1000);
+
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    updateTimeAndDate();
+}
+);
 
 document.getElementById('storyType').addEventListener('change', function() {
     currentPage = 1; // Reset to first page on type change

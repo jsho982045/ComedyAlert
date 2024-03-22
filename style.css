@@ -32,6 +32,7 @@ p{
     border-bottom: 2px solid #2f2f2f;
     border-top: 2px solid #2f2f2f;
     padding: 12px 0 12px 0;
+    text-align: center;
 
 }
 .weatherforcastbox{
@@ -367,4 +368,23 @@ button#loadMore {
 .story-selection select[value="top"]:checked {
     font-weight: bold;
     text-decoration: underline;
+}
+
+
+
+#currentDate, #currentTime {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+}
+
+#currentDate {
+    text-align: left;
+    margin-top: -30px;
+    margin-left: 10px;
+}
+
+#currentTime {
+    text-align: right;
+    margin-top: -15px;
+    margin-right: 10px;
 }
